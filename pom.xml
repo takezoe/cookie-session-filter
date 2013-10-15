@@ -4,7 +4,7 @@
   <groupId>jp.sf.amateras.cookiesession</groupId>
   <artifactId>cookie-session-filter</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
   <name>SessionCookieFilter</name>
   <url>http://maven.apache.org</url>
   <description>
@@ -31,14 +31,14 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:svn:http://amateras.svn.sourceforge.net/svnroot/amateras/session-cookie-filter/trunk/session-cookie-filter</connection>
-    <developerConnection>scm:svn:https://amateras.svn.sourceforge.net/svnroot/amateras/session-cookie-filter/trunk/session-cookie-filter</developerConnection>
-    <url>http://amateras.svn.sourceforge.net/viewvc/amateras/session-cookie-filter/trunk/session-cookie-filter/</url>
+    <connection>scm:git:https://github.com/takezoe/cookie-session-filter.git</connection>
+    <developerConnection>scm:git:https://github.com/takezoe/cookie-session-filter.git</developerConnection>
+    <url>https://github.com/takezoe/cookie-session-filter</url>
   </scm>
 
   <issueManagement>
-    <system>SourceForge.jp Ticket System</system>
-    <url>http://sourceforge.jp/projects/amateras/ticket/</url>
+    <system>GitHub Issues</system>
+    <url>https://github.com/takezoe/cookie-session-filter/issues</url>
   </issueManagement>
 
   <repositories>

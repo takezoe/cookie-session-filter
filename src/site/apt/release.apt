@@ -1,0 +1,35 @@
+            ------
+            Release Notes
+            ------
+            Naoki Takezoe
+            ------
+            2011-08-27
+
+Release Notes
+
+* {0.0.3 - 01 Oct 2011}
+
+ * The encoder became configurable. The default encoder is BinaryEncoder. You can also use JSONEncoder or your own encoder instead of it.
+
+ * Exception handling is improved.
+
+ []
+
+* {0.0.2 - 09 Sep 2011}
+
+ * All primitive types and array could be put into the session directly. (0.0.1 has been supported only int, long and String)
+
+ * Supports HttpSession#setMaxInactiveInterval() and timeout configuration.
+
+ * Writes cookies before flushing response.
+
+ * Supports HttpSessionAttributeListener.
+
+ []
+
+* {0.0.1 - 27 Aug 2011}
+
+  * Initial Release.
+
+  []
+

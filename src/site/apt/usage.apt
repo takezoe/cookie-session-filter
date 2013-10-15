@@ -1,0 +1,120 @@
+            ------
+            Usage
+            ------
+            Naoki Takezoe
+            ------
+            2011-08-27
+
+Usage
+
+%{toc|section=1|fromDepth=1|toDepth=3}
+
+* {What's CookieSessionFilter?}
+
+ SessionCookieFilter is a servlet filter which stores session data into the client cookie.
+ It provides HttpSession interface. So any modification in your application is not necessary.
+
+ In using SessionCookieFilter, session replication becomes unnecessary for multiplexing of application servers.
+ You'll be able to make and manage multiplexing environment more easily.
+
+* {Setup}
+
+** {Download}
+
+ You can get JAR file from the following URL:
+
+   * {{http://amateras.sourceforge.jp/mvn/jp/sf/amateras/cookiesession/cookie-session-filter/0.0.2/cookie-session-filter-0.0.3.jar}}
+
+   []
+
+ CookieSessionFilter requires JSONIC and Commons Codec, you can get them from following URLs:
+
+   * {{http://amateras.sourceforge.jp/mvn/net/arnx/jsonic/1.2.6/jsonic-1.2.6.jar}}
+
+   * {{http://repo1.maven.org/maven2/commons-codec/commons-codec/1.5/commons-codec-1.5.jar}}
+
+   []
+
+   See details about other dependencies at {{{./dependencies.html}Project Dependencies}}.
+
+** {Maven}
+
+ If you are using Maven, you can get CookieSessionFilter from the Maven repository which is provided by Project Amateras.
+ Add the following fragment into your pom.xml.
+
+----
+<repositories>
+  <repository>
+    <id>amateras</id>
+    <name>Project Amateras Maven2 Repository</name>
+    <url>http://amateras.sourceforge.jp/mvn/</url>
+  </repository>
+</repositories>
+
+<dependencies>
+  <dependency>
+    <groupId>jp.sf.amateras.cookiesession</groupId>
+    <artifactId>cookie-session-filter</artifactId>
+    <version>0.0.3</version>
+  </dependency>
+</dependencies>
+----
+
+** {web.xml}
+
+ Register <<CookieSessionFilter>> in web.xml as following:
+
+----
+<filter>
+  <filter-name>cookieSessionFilter</filter-name>
+  <filter-class>jp.sf.amateras.cookiesession.CookieSessionFilter</filter-class>
+  <init-param>
+    <param-name>cipher</param-name>
+    <param-value>jp.sf.amateras.cookiesession.cipher.BlowfishCipher</param-value>
+  </init-param>
+  <init-param>
+    <param-name>key</param-name>
+    <param-value>1234</param-value>
+  </init-param>
+</filter>
+
+<filter-mapping>
+  <filter-name>cookieSessionFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+  <dispatcher>REQUEST</dispatcher>
+  <dispatcher>INCLUDE</dispatcher>
+  <dispatcher>FORWARD</dispatcher>
+</filter-mapping>
+----
+
+ Note the <<key>> is the Blowfish secret key. You have to modify it appropriately.
+
+ CookieSessionFilter has a following init parameters:
+
+*-----------------+-----------------------------------------------------------------------------------+
+ <<Name>>         |<<Description>>
+*-----------------+-----------------------------------------------------------------------------------+
+ cookieName       |The prefix of cookie name which is stored session data. The default is 'session-cookie', So actual cookie name would be 'session-cookie01' or 'session-cookie02'.
+*-----------------+-----------------------------------------------------------------------------------+
+ cipher (required)|The class name of cipher which encrypts cookie values. CookieSessionFilter contains an implementation 'jp.sf.amateras.cookiesession.cipher.BlowfishCipher'.
+*-----------------+-----------------------------------------------------------------------------------+
+ encoder          |The class name of encoder which encodes session attributes as the string and decode it. The default is 'jp.sf.amateras.cookiesession.encoder.BinaryEncoder'. CookieSessionFilter also contains 'jp.sf.amateras.cookiesession.encoder.JSONEncoder' which serializes as the JSON string.
+*-----------------+-----------------------------------------------------------------------------------+
+ key              |The secret key for BlowfishCipher. When you specify BlowfishCipher as cipher, this parameter is required.
+*-----------------+-----------------------------------------------------------------------------------+
+ maxCookie        |The max number of session cookies. If the number of cookies exceeds this value, CookieSessionFilter throws an CookieSessionException.
+*-----------------+-----------------------------------------------------------------------------------+
+ cookieSize       |The max byte size of value per a cookie. If encryped session data size exceeds this value, it woule be divided this size and stored as two or more cookies.
+*-----------------+-----------------------------------------------------------------------------------+
+ listeners        |The class name of HttpSessionAttributeListener implementation. You can specify two or more listeners by comma separation.
+*-----------------+-----------------------------------------------------------------------------------+
+ timeout          |Interval of session timeout (minutes).
+*-----------------+-----------------------------------------------------------------------------------+
+
+* {TODO}
+
+ * Suitable logging
+
+ * session-attributes persistence using memcached instead of Cookie. It means the persistence layer should become pluggable.
+
+ []

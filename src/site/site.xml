@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="CookieSessionFilter">
+  <body>
+    <menu name="Document">
+      <item name="Usage" href="usage.html" />
+      <item name="Release Notes" href="release.html" />
+    </menu>
+    <menu ref="reports" />
+  </body>
+</project>

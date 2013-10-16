@@ -7,6 +7,10 @@
 
 Release Notes
 
+* {0.0.4 - 16 Oct 2013}
+
+ * Removes maxCookie parameter because browsers send cookies as a single header.
+
 * {0.0.3 - 01 Oct 2011}
 
  * The encoder became configurable. The default encoder is BinaryEncoder. You can also use JSONEncoder or your own encoder instead of it.

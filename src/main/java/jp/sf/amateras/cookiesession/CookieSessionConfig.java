@@ -15,8 +15,6 @@ public class CookieSessionConfig {
 
 	public static final String CONFIG_CIPHER = "cipher";
 
-	public static final String CONFIG_MAX_COOKIE = "maxCookie";
-
 	public static final String CONFIG_COOKIE_SIZE = "cookieSize";
 
 	public static final String CONFIG_LISTENERS = "listeners";
@@ -28,8 +26,6 @@ public class CookieSessionConfig {
 	public String cookieName = "session-cookie";
 
 	public Cipher cipher;
-
-	public int maxCookie = 5;
 
 	public int cookieSize = 4096;
 

@@ -23,8 +23,6 @@ public class CookieSessionRequest extends HttpServletRequestWrapper {
 
 	private ServletContext context;
 
-	private Map<String, Cookie> cookieMap;
-
 	public CookieSessionRequest(HttpServletRequest request, CookieSessionConfig config,
 			ServletContext context) {
 		super(request);
@@ -95,33 +93,24 @@ public class CookieSessionRequest extends HttpServletRequestWrapper {
 	}
 
 	private String getCookieValue(){
-		Map<String, Cookie> cookies = getSessionCookies();
-		StringBuilder sb = new StringBuilder();
-		int count = 1;
-		while(true){
-			Cookie cookie = cookies.get(this.config.cookieName + String.format("%02d", count));
-			if(cookie == null){
-				break;
-			}
-			sb.append(cookie.getValue());
-			count++;
+		Cookie cookie = getSessionCookie();
+		if(cookie != null){
+			return cookie.getValue();
+		} else {
+			return "";
 		}
-		return sb.toString();
 	}
 
-	public Map<String, Cookie> getSessionCookies(){
-		if(this.cookieMap == null){
-			this.cookieMap = new HashMap<String, Cookie>();
-			Cookie[] cookies = getCookies();
-			if(cookies != null){
-				for(Cookie cookie: cookies){
-					if(cookie.getName().startsWith(this.config.cookieName)){
-						this.cookieMap.put(cookie.getName(), cookie);
-					}
+	public Cookie getSessionCookie(){
+		Cookie[] cookies = getCookies();
+		if(cookies != null){
+			for(Cookie cookie: cookies){
+				if(cookie.getName().equals(this.config.cookieName)){
+					return cookie;
 				}
 			}
 		}
-		return this.cookieMap;
+		return null;
 	}
 
 	@Override

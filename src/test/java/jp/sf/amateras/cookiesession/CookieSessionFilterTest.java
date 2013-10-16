@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import jp.sf.amateras.cookiesession.cipher.BlowfishCipher;
 import jp.sf.amateras.cookiesession.encoder.BinaryEncoder;
+import jp.sf.amateras.cookiesession.exception.CookieSessionException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -72,7 +73,7 @@ public class CookieSessionFilterTest {
 
 		List<Cookie> cookies = captor.getAllValues();
 		assertEquals(1, cookies.size());
-		assertEquals("session-cookie01", cookies.get(0).getName());
+		assertEquals("session-cookie", cookies.get(0).getName());
 
 		BlowfishCipher chiper = new BlowfishCipher();
 		chiper.init(config);
@@ -86,7 +87,7 @@ public class CookieSessionFilterTest {
 	}
 
 	@Test
-	public void testDoFilter_multiCookie() throws Exception {
+	public void testDoFilter_exceedCookieSize() throws Exception {
 		doAnswer(new Answer<Void>() {
 			public Void answer(InvocationOnMock invocation) throws Throwable {
 				HttpServletRequest request = (HttpServletRequest) invocation.getArguments()[0];
@@ -106,27 +107,12 @@ public class CookieSessionFilterTest {
 
 		CookieSessionFilter filter = new CookieSessionFilter();
 		filter.init(config);
-		filter.doFilter(request, response, chain);
-
-		ArgumentCaptor<Cookie> captor = ArgumentCaptor.forClass(Cookie.class);
-		verify(response, times(3)).addCookie(captor.capture());
-
-		List<Cookie> cookies = captor.getAllValues();
-		assertEquals(3, cookies.size());
-		assertEquals("session-cookie01", cookies.get(0).getName());
-		assertEquals("session-cookie02", cookies.get(1).getName());
-		assertEquals("session-cookie03", cookies.get(2).getName());
-
-		BlowfishCipher chiper = new BlowfishCipher();
-		chiper.init(config);
-
-		Map<String, Object> map = new BinaryEncoder().decode(chiper.decrypt(
-				cookies.get(0).getValue() + cookies.get(1).getValue() + cookies.get(2).getValue()));
-		LoginInfo result = (LoginInfo) map.get("loginInfo");
-
-		assertEquals("testuser", result.userId);
-		assertEquals("Test User", result.userName);
-		assertEquals(1, result.userType);
+		try {
+			filter.doFilter(request, response, chain);
+			fail();
+		} catch(CookieSessionException ex){
+			assertEquals("Cookie size exceeds limit.", ex.getMessage());
+		}
 	}
 
 	@Test
@@ -147,8 +133,7 @@ public class CookieSessionFilterTest {
 		}).when(chain).doFilter(any(HttpServletRequest.class), any(HttpServletResponse.class));
 
 		when(request.getCookies()).thenReturn(new Cookie[]{
-				new Cookie("session-cookie01", ""),
-				new Cookie("session-cookie02", ""),
+				new Cookie("session-cookie", "")
 		});
 
 		CookieSessionFilter filter = new CookieSessionFilter();
@@ -156,18 +141,14 @@ public class CookieSessionFilterTest {
 		filter.doFilter(request, response, chain);
 
 		ArgumentCaptor<Cookie> captor = ArgumentCaptor.forClass(Cookie.class);
-		verify(response, times(2)).addCookie(captor.capture());
+		verify(response, times(1)).addCookie(captor.capture());
 
 		List<Cookie> cookies = captor.getAllValues();
-		assertEquals(2, cookies.size());
+		assertEquals(1, cookies.size());
 
-		assertEquals("session-cookie01", cookies.get(0).getName());
+		assertEquals("session-cookie", cookies.get(0).getName());
 		assertTrue(cookies.get(0).getValue().length() > 0);
 		assertEquals(-1, cookies.get(0).getMaxAge());
-
-		assertEquals("session-cookie02", cookies.get(1).getName());
-		assertTrue(cookies.get(1).getValue().length() == 0);
-		assertEquals(0, cookies.get(1).getMaxAge());
 	}
 
 	@Test
@@ -181,8 +162,7 @@ public class CookieSessionFilterTest {
 		}).when(chain).doFilter(any(HttpServletRequest.class), any(HttpServletResponse.class));
 
 		when(request.getCookies()).thenReturn(new Cookie[]{
-				new Cookie("session-cookie01", ""),
-				new Cookie("session-cookie02", ""),
+				new Cookie("session-cookie", "")
 		});
 
 		CookieSessionFilter filter = new CookieSessionFilter();
@@ -190,17 +170,13 @@ public class CookieSessionFilterTest {
 		filter.doFilter(request, response, chain);
 
 		ArgumentCaptor<Cookie> captor = ArgumentCaptor.forClass(Cookie.class);
-		verify(response, times(2)).addCookie(captor.capture());
+		verify(response, times(1)).addCookie(captor.capture());
 
 		List<Cookie> cookies = captor.getAllValues();
-		assertEquals(2, cookies.size());
-		assertEquals("session-cookie01", cookies.get(0).getName());
+		assertEquals(1, cookies.size());
+		assertEquals("session-cookie", cookies.get(0).getName());
 		assertTrue(cookies.get(0).getValue().length() == 0);
 		assertEquals(0, cookies.get(0).getMaxAge());
-
-		assertEquals("session-cookie02", cookies.get(1).getName());
-		assertTrue(cookies.get(1).getValue().length() == 0);
-		assertEquals(0, cookies.get(1).getMaxAge());
 	}
 
 	public static class LoginInfo implements Serializable {

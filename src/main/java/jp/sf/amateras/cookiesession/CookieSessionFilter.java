@@ -66,15 +66,15 @@ public class CookieSessionFilter implements Filter {
 		}
 		this.config.cipher.init(filterConfig);
 
-		// maxCookie
-		String maxCookie = filterConfig.getInitParameter(CookieSessionConfig.CONFIG_MAX_COOKIE);
-		if(StringUtil.isNotEmpty(maxCookie)){
-			try {
-				this.config.maxCookie = Integer.parseInt(maxCookie.trim());
-			} catch(Exception ex){
-				throw new InitializationException("maxCookie has not been a number.");
-			}
-		}
+//		// maxCookie
+//		String maxCookie = filterConfig.getInitParameter(CookieSessionConfig.CONFIG_MAX_COOKIE);
+//		if(StringUtil.isNotEmpty(maxCookie)){
+//			try {
+//				this.config.maxCookie = Integer.parseInt(maxCookie.trim());
+//			} catch(Exception ex){
+//				throw new InitializationException("maxCookie has not been a number.");
+//			}
+//		}
 
 		// cookieSize
 		String cookieSize = filterConfig.getInitParameter(CookieSessionConfig.CONFIG_COOKIE_SIZE);

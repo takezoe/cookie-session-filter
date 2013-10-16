@@ -2,7 +2,6 @@ package jp.sf.amateras.cookiesession.wrapper;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
@@ -13,7 +12,6 @@ import jp.sf.amateras.cookiesession.CookieSessionConfig;
 import jp.sf.amateras.cookiesession.exception.ChiperException;
 import jp.sf.amateras.cookiesession.exception.CookieSessionException;
 import jp.sf.amateras.cookiesession.exception.EncoderException;
-import jp.sf.amateras.cookiesession.util.StringUtil;
 
 public class CookieSessionResponse extends HttpServletResponseWrapper {
 
@@ -63,33 +61,20 @@ public class CookieSessionResponse extends HttpServletResponseWrapper {
 		// Updates SessionCookie
 		CookieSession session = (CookieSession) this.request.getSession();
 		if(session == null || session.isInvalidated()){
-			// Clear SessionCookie
-			int currentCookieCount = this.request.getSessionCookies().size();
-			for(int i=0; i < currentCookieCount; i++){
-				Cookie cookie = new Cookie(this.config.cookieName + String.format("%02d", i + 1), "");
-				cookie.setMaxAge(0);
-				addCookie(cookie);
-			}
+			Cookie cookie = new Cookie(this.config.cookieName, "");
+			cookie.setMaxAge(0);
+			addCookie(cookie);
 		} else {
 			// Write SessionCookie
 			try {
 				String encodedValue = this.config.encoder.encode(session.getAttributes());
 				String encryptedValue = this.config.cipher.encrypt(encodedValue);
-				List<String> splitted = StringUtil.split(encryptedValue, this.config.cookieSize);
-				if(splitted.size() > this.config.maxCookie){
-					throw new CookieSessionException("session size exceeds limit.");
+				if(encryptedValue.length() > this.config.cookieSize){
+					throw new CookieSessionException("Cookie size exceeds limit.");
 				}
-				int currentCookieCount = this.request.getSessionCookies().size();
-				for(int i=0; i < Math.max(splitted.size(), currentCookieCount); i++){
-					if(i < splitted.size()){
-						Cookie cookie = new Cookie(this.config.cookieName + String.format("%02d", i + 1), splitted.get(i));
-						addCookie(cookie);
-					} else {
-						Cookie cookie = new Cookie(this.config.cookieName + String.format("%02d", i + 1), "");
-						cookie.setMaxAge(0);
-						addCookie(cookie);
-					}
-				}
+				Cookie cookie = new Cookie(this.config.cookieName, encryptedValue);
+				addCookie(cookie);
+				
 			} catch(ChiperException ex){
 				// TODO warn log??
 				ex.printStackTrace();

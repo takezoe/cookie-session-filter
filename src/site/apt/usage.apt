@@ -55,7 +55,7 @@ Usage
   <dependency>
     <groupId>jp.sf.amateras.cookiesession</groupId>
     <artifactId>cookie-session-filter</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
   </dependency>
 </dependencies>
 ----
@@ -94,7 +94,7 @@ Usage
 *-----------------+-----------------------------------------------------------------------------------+
  <<Name>>         |<<Description>>
 *-----------------+-----------------------------------------------------------------------------------+
- cookieName       |The prefix of cookie name which is stored session data. The default is 'session-cookie', So actual cookie name would be 'session-cookie01' or 'session-cookie02'.
+ cookieName       |The cookie name which is stored session data. The default is 'session-cookie'.
 *-----------------+-----------------------------------------------------------------------------------+
  cipher (required)|The class name of cipher which encrypts cookie values. CookieSessionFilter contains an implementation 'jp.sf.amateras.cookiesession.cipher.BlowfishCipher'.
 *-----------------+-----------------------------------------------------------------------------------+
@@ -102,9 +102,7 @@ Usage
 *-----------------+-----------------------------------------------------------------------------------+
  key              |The secret key for BlowfishCipher. When you specify BlowfishCipher as cipher, this parameter is required.
 *-----------------+-----------------------------------------------------------------------------------+
- maxCookie        |The max number of session cookies. If the number of cookies exceeds this value, CookieSessionFilter throws an CookieSessionException.
-*-----------------+-----------------------------------------------------------------------------------+
- cookieSize       |The max byte size of value per a cookie. If encryped session data size exceeds this value, it woule be divided this size and stored as two or more cookies.
+ cookieSize       |The max byte size of value per a cookie. If encryped session data size exceeds this value, it throws CookieSessionException.
 *-----------------+-----------------------------------------------------------------------------------+
  listeners        |The class name of HttpSessionAttributeListener implementation. You can specify two or more listeners by comma separation.
 *-----------------+-----------------------------------------------------------------------------------+

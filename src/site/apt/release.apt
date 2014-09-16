@@ -7,9 +7,17 @@
 
 Release Notes
 
+* {0.0.5 - 17 Sep 2014}
+
+ * Add cookiePath and cookieDomain config
+
+ []
+
 * {0.0.4 - 16 Oct 2013}
 
  * Removes maxCookie parameter because browsers send cookies as a single header.
+
+ []
 
 * {0.0.3 - 01 Oct 2011}
 
@@ -36,4 +44,3 @@ Release Notes
   * Initial Release.
 
   []
-

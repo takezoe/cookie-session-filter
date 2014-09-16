@@ -4,7 +4,7 @@
   <groupId>jp.sf.amateras.cookiesession</groupId>
   <artifactId>cookie-session-filter</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.4</version>
+  <version>0.0.5</version>
   <name>SessionCookieFilter</name>
   <url>http://maven.apache.org</url>
   <description>

@@ -40,6 +40,18 @@ public class CookieSessionFilter implements Filter {
 			this.config.cookieName = cookieName;
 		}
 
+        // cookiePath
+		String cookiePath = filterConfig.getInitParameter(CookieSessionConfig.CONFIG_COOKIE_PATH);
+		if(StringUtil.isNotEmpty(cookiePath)){
+			this.config.cookiePath = cookiePath;
+		}
+
+        // cookieDomain
+		String cookieDomain = filterConfig.getInitParameter(CookieSessionConfig.CONFIG_COOKIE_DOMAIN);
+		if(StringUtil.isNotEmpty(cookieDomain)){
+			this.config.cookieDomain = cookieDomain;
+		}
+
 		// encoder
 		String encoderClassName = filterConfig.getInitParameter(CookieSessionConfig.CONFIG_ENCODER);
 		if(StringUtil.isNotEmpty(encoderClassName)){

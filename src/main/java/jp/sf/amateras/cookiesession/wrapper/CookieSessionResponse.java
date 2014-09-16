@@ -12,6 +12,7 @@ import jp.sf.amateras.cookiesession.CookieSessionConfig;
 import jp.sf.amateras.cookiesession.exception.ChiperException;
 import jp.sf.amateras.cookiesession.exception.CookieSessionException;
 import jp.sf.amateras.cookiesession.exception.EncoderException;
+import jp.sf.amateras.cookiesession.util.StringUtil;
 
 public class CookieSessionResponse extends HttpServletResponseWrapper {
 
@@ -62,6 +63,12 @@ public class CookieSessionResponse extends HttpServletResponseWrapper {
 		CookieSession session = (CookieSession) this.request.getSession();
 		if(session == null || session.isInvalidated()){
 			Cookie cookie = new Cookie(this.config.cookieName, "");
+			if(StringUtil.isNotEmpty(this.config.cookiePath)) {
+				cookie.setPath(this.config.cookiePath);
+			}
+			if(StringUtil.isNotEmpty(this.config.cookieDomain)) {
+				cookie.setDomain(this.config.cookieDomain);
+			}
 			cookie.setMaxAge(0);
 			addCookie(cookie);
 		} else {
@@ -73,6 +80,12 @@ public class CookieSessionResponse extends HttpServletResponseWrapper {
 					throw new CookieSessionException("Cookie size exceeds limit.");
 				}
 				Cookie cookie = new Cookie(this.config.cookieName, encryptedValue);
+				if(StringUtil.isNotEmpty(this.config.cookiePath)) {
+					cookie.setPath(this.config.cookiePath);
+				}
+				if(StringUtil.isNotEmpty(this.config.cookieDomain)) {
+					cookie.setDomain(this.config.cookieDomain);
+				}
 				addCookie(cookie);
 				
 			} catch(ChiperException ex){

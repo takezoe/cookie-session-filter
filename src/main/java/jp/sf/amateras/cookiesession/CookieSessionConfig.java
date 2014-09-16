@@ -12,6 +12,10 @@ import jp.sf.amateras.cookiesession.encoder.SessionEncoder;
 public class CookieSessionConfig {
 
 	public static final String CONFIG_COOKIE_NAME = "cookieName";
+	
+	public static final String CONFIG_COOKIE_PATH = "cookiePath";
+	
+	public static final String CONFIG_COOKIE_DOMAIN = "cookieDomain";
 
 	public static final String CONFIG_CIPHER = "cipher";
 
@@ -25,7 +29,11 @@ public class CookieSessionConfig {
 
 	public String cookieName = "session-cookie";
 
-	public Cipher cipher;
+	public String cookiePath = "";
+    
+	public String cookieDomain = "";
+
+    public Cipher cipher;
 
 	public int cookieSize = 4096;
 

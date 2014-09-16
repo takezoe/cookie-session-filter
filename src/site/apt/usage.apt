@@ -96,6 +96,10 @@ Usage
 *-----------------+-----------------------------------------------------------------------------------+
  cookieName       |The cookie name which is stored session data. The default is 'session-cookie'.
 *-----------------+-----------------------------------------------------------------------------------+
+ cookiePath       |The cookie path for the session cookie. The filter sets no path by default.
+*-----------------+-----------------------------------------------------------------------------------+
+ cookieDomain     |The cookie domain for the session cookie. The filter sets no domain by default.
+*-----------------+-----------------------------------------------------------------------------------+
  cipher (required)|The class name of cipher which encrypts cookie values. CookieSessionFilter contains an implementation 'jp.sf.amateras.cookiesession.cipher.BlowfishCipher'.
 *-----------------+-----------------------------------------------------------------------------------+
  encoder          |The class name of encoder which encodes session attributes as the string and decode it. The default is 'jp.sf.amateras.cookiesession.encoder.BinaryEncoder'. CookieSessionFilter also contains 'jp.sf.amateras.cookiesession.encoder.JSONEncoder' which serializes as the JSON string.
